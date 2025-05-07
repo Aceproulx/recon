@@ -140,7 +140,7 @@ $ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt | tee cves.txt
     `.trim();
 
     const baseExploitationCommands = `
-$ subzy run --targets subexample.coms.txt --concurrency 100 --hide_fails --verify_ssl
+$ subzy run --targets hosts_alive.txt --concurrency 100 --hide_fails --verify_ssl
 $ cat hosts_alive.txt | xargs -I % curl -I % -H "Host: {{COLLAB}}" -H "X-Forwarded-Host: {{COLLAB}}" -H "X-Original-Host: {{COLLAB}}" -H "X-Forwarded-Server: {{COLLAB}}" -H "X-Host: {{COLLAB}}" -H "X-Real-IP: {{COLLAB}}" -H "X-Forwarded-For: {{COLLAB}}" -H "Forwarded: for={{COLLAB}};host=target.com;proto=https"
 $ cat hosts_alive.txt | xargs -I % curl -I % -H "X-Forwarded-Host: {{COLLAB}}" -H "X-Original-Host: {{COLLAB}}" -H "X-Forwarded-Server: {{COLLAB}}" -H "X-Host: {{COLLAB}}" -H "X-Real-IP: {{COLLAB}}" -H "X-Forwarded-For: {{COLLAB}}" -H "Forwarded: for={{COLLAB}};host=target.com;proto=https"    
 $ cat all{{TARGET}}urls.txt | grep "=" | qsreplace {{COLLAB}} | httpx

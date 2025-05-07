@@ -208,6 +208,10 @@ $ sif -d {{TARGET}}
     }
     function copyToClipboard(type) {
       const outputId = type === 'recon' ? 'output-recon' : 'output-exploit';
+      const button = type === 'recon'
+        ? document.querySelector('.btn-success')
+        : document.querySelector('.btn-warning');
+
       const text = document.getElementById(outputId).innerText;
 
       // Remove '$ ' from the beginning of each line before copying
@@ -217,9 +221,16 @@ $ sif -d {{TARGET}}
         .join('\n');
 
       navigator.clipboard.writeText(cleanedText)
-        .then(() => alert("Copied to clipboard!"))
+        .then(() => {
+          const originalText = button.textContent;
+          button.textContent = 'Copied! happy hacking 😁🤡';
+          setTimeout(() => {
+            button.textContent = originalText;
+          }, 2000);
+        })
         .catch(() => alert("Failed to copy!"));
     }
+
 
 
 

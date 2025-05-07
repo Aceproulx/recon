@@ -139,7 +139,6 @@ $ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_
 $ cat all{{TARGET}}urls.txt | grep -oE '(/|https?://)[^"]+\.js' | anew jsfiles.txt
 $ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt
 $ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt | tee cves.txt
-$ cat httpx_{{TARGET}}.txt | awk '{print $1}' > live_subs_{{TARGET}}.txt
     `.trim();
 
     const baseExploitationCommands = `

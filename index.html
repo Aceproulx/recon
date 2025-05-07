@@ -116,8 +116,8 @@
 # [----- (aceos@MIKE) - [~hacking-commands]
 $ subfinder -d {{TARGET}} -all -recursive | tee subfinder.txt
 $ shodanx subdomain -d {{TARGET}} -o shodanx.txt
-$ assetfinder --subs-only {{TARGET}} | tee -a assertfinder.txt
-$ amass enum -active -norecursive -d {{TARGET}} -o amass.txt
+$ assetfinder --subs-only {{TARGET}} | grep "\.{{TARGET}}" | tee -a assertfinder.txt
+$ amass enum -active -norecursive -d {{TARGET}} | grep "\.{{TARGET}}" | awk '{print $1}' | tee amass.txt
 $ gobuster dns -d {{TARGET}} -w /mnt/d/Downloads/Documents/subdomain_megalist.txt -o gobuster_temp.txt
 $ cat gobuster_temp.txt | awk '{print $2}' | tee gobuster.txt
 $ rm gobuster_temp.txt
@@ -126,7 +126,7 @@ $ curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/{{TARGET}}/pass
 $ curl -s "https://urlscan.io/api/v1/search/?q=domain:{{TARGET}}&size=10000" | jq -r '.results[]?.page?.domain' | sort -u | tee urlscan_subs.txt
 $ cat subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt | sort -u | tee all_subs_{{TARGET}}.txt
 $ httpx -l all_subs_{{TARGET}}.txt -td -title -sc -ip -threads 200 -o httpx_{{TARGET}}.txt
-$ cat httpx_{{TARGET}}.txt | grep -Ei 'asp|php|jsp|jspx|aspx' | tee subs-commonly-wth-vulns.txt
+$ cat httpx_{{TARGET}}.txt | grep -Ei 'old|asp|php|jsp|jspx|aspx' | tee subs-commonly-wth-vulns.txt
 $ cat httpx_{{TARGET}}.txt | awk '{print $1}' | tee hosts_alive.txt
 $ cat hosts_alive.txt | grep -E "admin|panel|portal|secure|dashboard|internal|api" | tee important_subdomains.txt
 $ waymore -i {{TARGET}} -mode U -oU waymore.txt

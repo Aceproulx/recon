@@ -111,111 +111,87 @@
 
 
 
-  <script>
- function getRandomColor() {
-  const colors = ['#0ff', '#0f0', '#f0f', '#ff0', '#0cf', '#fc0', '#c0f', '#0fa'];
-  return colors[Math.floor(Math.random() * colors.length)];
-}
+ <script>
+  function getRandomColor() {
+    const colors = ['#0ff', '#0f0', '#f0f', '#ff0', '#0cf', '#fc0', '#c0f', '#0fa'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
 
-function loadCommands(file, elementId) {
-  fetch(file)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Failed to load ${file}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      const lines = data.split('\n');
-      const coloredLines = lines.map(line => {
-        const color = getRandomColor();
-        return `<span style="color: ${color}">${line}</span>`;
+  function loadCommands(file, elementId, target = "", collaborator = "") {
+    fetch(file)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load ${file}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        // Replace placeholders
+        let replaced = data
+          .replaceAll("{{TARGET}}", target)
+          .replaceAll("{{COLLAB}}", collaborator);
+
+        const lines = replaced.split('\n');
+        const coloredLines = lines.map(line => {
+          const color = getRandomColor();
+          return `<span style="color: ${color}">${line}</span>`;
+        });
+        document.getElementById(elementId).innerHTML = coloredLines.join('<br>');
+      })
+      .catch(error => {
+        document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;
       });
-      document.getElementById(elementId).innerHTML = coloredLines.join('<br>');
-    })
-    .catch(error => {
-      document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;
-    });
-}
+  }
 
-// Load both files
-loadCommands('recon_commands.txt', 'output-recon');
-loadCommands('exploit_commands.txt', 'output-exploit');
+  function generateCommands(type) {
+    const inputId = type === 'recon' ? 'target' : 'target2';
+    const outputId = 'output-' + type;
+    const target = document.getElementById(inputId).value.trim();
 
+    if (!target) {
+      alert("Please enter a target domain.");
+      return;
+    }
 
-    function generateCommands(type) {
-      const inputId = type === 'recon' ? 'target' : 'target2';
-      const outputId = 'output-' + type;
-      const target = document.getElementById(inputId).value.trim();
-
-      if (!target) {
-        alert("Please enter a target domain.");
+    let collaborator = "";
+    if (type === 'exploit') {
+      collaborator = document.getElementById("collaborator").value.trim();
+      if (!collaborator) {
+        alert("Please enter a collaborator server.");
         return;
       }
-
-      let collaborator = "";
-      if (type === 'exploit') {
-        collaborator = document.getElementById("collaborator").value.trim();
-        if (!collaborator) {
-          alert("Please enter a collaborator server.");
-          return;
-        }
-      }
-
-      const base = type === 'recon' ? baseReconCommands : baseExploitationCommands;
-      const outputDiv = document.getElementById(outputId);
-      outputDiv.innerHTML = '';
-
-      const replaced = base
-        .replaceAll("{{TARGET}}", target)
-        .replaceAll("{{COLLAB}}", collaborator);
-
-      const lines = replaced.split("\n");
-      let prevColor = null;
-
-      lines.forEach(line => {
-        let color;
-        do {
-          color = getRandomColor();
-        } while (color === prevColor);
-        prevColor = color;
-
-        const span = document.createElement("span");
-        span.className = "colored-line";
-        span.style.color = color;
-        span.textContent = line;
-        outputDiv.appendChild(span);
-      });
-    }
-    function copyToClipboard(type) {
-      const outputId = type === 'recon' ? 'output-recon' : 'output-exploit';
-      const button = type === 'recon'
-        ? document.querySelector('.btn-success')
-        : document.querySelector('.btn-warning');
-
-      const text = document.getElementById(outputId).innerText;
-
-      // Remove '$ ' from the beginning of each line before copying
-      const cleanedText = text
-        .split('\n')
-        .map(line => line.startsWith('$ ') ? line.slice(2) : line)
-        .join('\n');
-
-      navigator.clipboard.writeText(cleanedText)
-        .then(() => {
-          const originalText = button.textContent;
-          button.textContent = 'Copied! happy hacking 😁🤡';
-          setTimeout(() => {
-            button.textContent = originalText;
-          }, 2000);
-        })
-        .catch(() => alert("Failed to copy!"));
     }
 
+    const file = type === 'recon' ? 'recon_commands.txt' : 'exploit_commands.txt';
+    loadCommands(file, outputId, target, collaborator);
+  }
 
+  function copyToClipboard(type) {
+    const outputId = type === 'recon' ? 'output-recon' : 'output-exploit';
+    const button = type === 'recon'
+      ? document.querySelector('.btn-success')
+      : document.querySelector('.btn-warning');
 
+    const text = document.getElementById(outputId).innerText;
 
-  </script>
+    // Remove '$ ' from the beginning of each line before copying
+    const cleanedText = text
+      .split('\n')
+      .map(line => line.startsWith('$ ') ? line.slice(2) : line)
+      .join('\n');
+
+    navigator.clipboard.writeText(cleanedText)
+      .then(() => {
+        const originalText = button.textContent;
+        button.textContent = 'Copied! happy hacking 😁🤡';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      })
+      .catch(() => alert("Failed to copy!"));
+  }
+</script>
+
 
 </body>
 

@@ -112,34 +112,36 @@
 
 
   <script>
- function loadCommands(file, elementId) {
-    fetch(file)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Failed to load ${file}`);
-        }
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById(elementId).textContent = data;
-      })
-      .catch(error => {
-        document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;
+ function getRandomColor() {
+  const colors = ['#0ff', '#0f0', '#f0f', '#ff0', '#0cf', '#fc0', '#c0f', '#0fa'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function loadCommands(file, elementId) {
+  fetch(file)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to load ${file}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      const lines = data.split('\n');
+      const coloredLines = lines.map(line => {
+        const color = getRandomColor();
+        return `<span style="color: ${color}">${line}</span>`;
       });
-  }
+      document.getElementById(elementId).innerHTML = coloredLines.join('<br>');
+    })
+    .catch(error => {
+      document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;
+    });
+}
 
-  // Load both files
-  loadCommands('recon_commands.txt', 'output-recon');
-  loadCommands('exploit_commands.txt', 'output-exploit');
+// Load both files
+loadCommands('recon_commands.txt', 'output-recon');
+loadCommands('exploit_commands.txt', 'output-exploit');
 
-
-
-
-
-    function getRandomColor() {
-      const colors = ['#0ff', '#0f0', '#f0f', '#ff0', '#0cf', '#fc0', '#c0f', '#0fa'];
-      return colors[Math.floor(Math.random() * colors.length)];
-    }
 
     function generateCommands(type) {
       const inputId = type === 'recon' ? 'target' : 'target2';

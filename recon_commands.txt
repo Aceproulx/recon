@@ -21,7 +21,7 @@ $ cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
 $ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
 $ grep -oE '(/|https?://)[^"]+\.js' all{{TARGET}}urls.txt | grep -Ev '/?(jquery|bootstrap|react|vue|angular|popper|moment|chart|axios|lodash)(\.bundle)?(\.min)?\.js' | anew jsfiles_filtered.txt
 $ grep -iE '(auth|login|session|user|account|register|payment|checkout|wallet|admin|dashboard|cms|config|env|debug|core|main|app)' jsfiles_filtered.txt > jsfiles_goldmine.txt
-$while read url; do echo -e "\n\n//=== THIS JSFILE BELONGS TO: $url ===\n" | tee -a goldmine_javascript_dump.txt; curl -s "$url" | tee -a goldmine_javascript_dump.txt | grep -iE 'apikey|token|secret|authorization|bearer'; done < jsfiles_goldmine.txt
+$ while read url; do echo -e "\n\n//=== THIS JSFILE BELONGS TO: $url ===\n" | tee -a goldmine_javascript_dump.txt; curl -s "$url" | tee -a goldmine_javascript_dump.txt | grep -iE 'apikey|token|secret|authorization|bearer'; done < jsfiles_goldmine.txt
 $ js-beautify goldmine_javascript_dump.txt | tee beautiful_goldmine_javascript_dump.js
 $ rm goldmine_javascript_dump.txt ; mv beautiful_goldmine_javascript_dump.js goldmine_javascript_dump.txt
 $ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt

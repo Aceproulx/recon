@@ -132,12 +132,11 @@
           .replaceAll("{{COLLAB}}", collaborator);
 
         const lines = replaced.split('\n');
-        const coloredLines = lines
-          .filter(line => line.trim() !== "") 
-          .map(line => {
-            const color = getRandomColor();
-            return `<span style="color: ${color}">${line}</span>`;
-          });
+        const coloredLines = lines.map(line => {
+          const color = getRandomColor();
+          return `<span style="color: ${color}">${line}</span>`;
+        });
+        document.getElementById(elementId).dataset.raw = replaced.trim(); // store original commands
         document.getElementById(elementId).innerHTML = coloredLines.join('<br>');
 
       })
@@ -175,7 +174,8 @@
       ? document.querySelector('.btn-success')
       : document.querySelector('.btn-warning');
 
-    const text = document.getElementById(outputId).innerText;
+    const text = document.getElementById(outputId).dataset.raw || '';
+
 
     // Remove '$ ' from the beginning of each line before copying
     const cleanedText = text

@@ -132,11 +132,14 @@
           .replaceAll("{{COLLAB}}", collaborator);
 
         const lines = replaced.split('\n');
-        const coloredLines = lines.map(line => {
-          const color = getRandomColor();
-          return `<span style="color: ${color}">${line}</span>`;
-        });
+        const coloredLines = lines
+          .filter(line => line.trim() !== "") 
+          .map(line => {
+            const color = getRandomColor();
+            return `<span style="color: ${color}">${line}</span>`;
+          });
         document.getElementById(elementId).innerHTML = coloredLines.join('<br>');
+
       })
       .catch(error => {
         document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;

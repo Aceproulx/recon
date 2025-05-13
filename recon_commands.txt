@@ -7,7 +7,7 @@ $ gobuster dns -d {{TARGET}} -w /mnt/d/Downloads/Documents/subdomain_megalist.tx
 $ cat subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt | sort -u | grep '\.{{TARGET}}'| tee -a subs_{{TARGET}}.txt && rm  subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt
 $ curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/{{TARGET}}/passive_dns" | jq -r '.passive_dns[]?.hostname' | sort -u | tee -a alienvault_subs.txt
 $ curl -s "https://urlscan.io/api/v1/search/?q=domain:{{TARGET}}&size=10000" | jq -r '.results[]?.page?.domain' | sort -u | tee urlscan_subs.txt
-$ cat subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt | sort -u | tee all_subs_{{TARGET}}.txt && rm subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt
+$ cat subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt | sort -u |grep {{TARGET}}| tee all_subs_{{TARGET}}.txt && rm subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt
 $ httpx -l all_subs_{{TARGET}}.txt -td -title -sc -ip -threads 200 -o httpx_{{TARGET}}.txt
 $ cat httpx_{{TARGET}}.txt | grep -Ei 'old|asp|php|jsp|jspx|aspx' | tee subs-commonly-wth-vulns.txt
 $ cat httpx_{{TARGET}}.txt | awk '{print $1}' | tee hosts_alive.txt

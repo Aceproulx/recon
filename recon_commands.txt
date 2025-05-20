@@ -15,8 +15,9 @@ $ cat hosts_alive.txt | grep -E "admin|panel|portal|secure|dashboard|internal|ap
 $ waymore -i {{TARGET}} -mode U -oU waymore.txt
 $ cat hosts_alive.txt | gau | tee gaurls.txt
 $ cat hosts_alive.txt | gauplus -subs -b png,jpg,gif,jpeg,swf,woff,gif,svg -o gauplus.txt
-$ cat hosts_alive.txt | katana -d 5 | tee katana.txt
+$ cat hosts_alive.txt | katana -d 5 | tee katana.txts
 $ cat gauplus.txt gaurls.txt katana.txt | anew all{{TARGET}}urls.txt
+$ cat all{{TARGET}}urls.txt | grep -Ei 'asp|php|jsp|jspx|aspx' | tee urls_common_with-vulns.txt
 $ cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
 $ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
 $ grep -oE '(/|https?://)[^"]+\.js' all{{TARGET}}urls.txt | grep -Ev '/?(jquery|bootstrap|react|vue|angular|popper|moment|chart|axios|lodash)(\.bundle)?(\.min)?\.js' | anew jsfiles_filtered.txt

@@ -1,0 +1,26 @@
+# Node.js dependencies
+node_modules/
+
+# Windows build folder (e.g., Electron build)
+myapp-win32-x64/
+
+# Lock file (optional — include if you're tracking exact versions)
+package-lock.json
+
+# Compiled main process file (e.g., Electron)
+main.js
+
+# Windows batch files
+*.bat
+
+# OS and editor junk
+.DS_Store
+Thumbs.db
+*.log
+
+# Optional: exclude editor/project files
+.vscode/
+.idea/
+
+#for my electron app
+package.json

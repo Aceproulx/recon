@@ -19,6 +19,7 @@ $ cat hosts_alive.txt | katana -d 5 | tee katana.txts
 $ cat gauplus.txt gaurls.txt katana.txt | anew all{{TARGET}}urls.txt
 $ cat all{{TARGET}}urls.txt | grep -E ".php|.asp|.aspx|.jspx|.jsp" | tee urls_common_with-vulns.txt
 $ cat all{{TARGET}}urls.txt | gf base64 >> tee base64.txt
+$ cat all{{TARGET}}urls.txt | gf ssrf | uro | tee ssrfurls.txt
 $ cat all{{TARGET}}urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
 $ grep -oE '(/|https?://)[^"]+\.js' all{{TARGET}}urls.txt | grep -Ev '/?(jquery|bootstrap|react|vue|angular|popper|moment|chart|axios|lodash)(\.bundle)?(\.min)?\.js' | anew jsfiles_filtered.txt
 $ grep -iE '(auth|login|session|user|account|register|payment|checkout|wallet|admin|dashboard|cms|config|env|debug|core|main|app)' jsfiles_filtered.txt > jsfiles_goldmine.txt

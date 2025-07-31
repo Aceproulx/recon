@@ -3,7 +3,7 @@ $ subfinder -d {{TARGET}} -all -recursive | tee subfinder.txt
 $ shodanx subdomain -d {{TARGET}} -o shodanx.txt
 $ assetfinder --subs-only {{TARGET}} | grep "\.{{TARGET}}" | tee -a assertfinder.txt
 $ amass enum -active -norecursive -d {{TARGET}} | grep "\.{{TARGET}}" | awk '{print $1}' | tee amass.txt
-$ gobuster dns -d {{TARGET}} -w /mnt/d/Downloads/Documents/subdomain_megalist.txt | awk '{print $2}' | tee gobuster.txt
+$ gobuster dns -d {{TARGET}} -w /mnt/d/Downloads/Documents/subdomain_megalist.txt -o gobuster_subs.txt && cat gobuster_subs.txt | awk '{print $2}' | tee gobuster.txt
 $ cat subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt | sort -u | grep '\.{{TARGET}}'| tee -a subs_{{TARGET}}.txt && rm  subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt
 $ curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/{{TARGET}}/passive_dns" | jq -r '.passive_dns[]?.hostname' | sort -u | tee -a alienvault_subs.txt
 $ curl -s "https://urlscan.io/api/v1/search/?q=domain:{{TARGET}}&size=10000" | jq -r '.results[]?.page?.domain' | sort -u | tee urlscan_subs.txt

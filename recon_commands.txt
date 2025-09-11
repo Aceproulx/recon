@@ -1,3 +1,4 @@
+#!/bin/bash
 # [----- (aceos@MIKE) - [~hacking-commands]
 $ subfinder -d {{TARGET}} -all -recursive | tee subfinder.txt
 $ shodanx subdomain -d {{TARGET}} -o shodanx.txt
@@ -27,3 +28,4 @@ $ while read url; do echo -e "\n\n//=== THIS JSFILE BELONGS TO: $url ===\n" | te
 $ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt
 $ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt | tee cves.txt
 $ find . -maxdepth 1 -type f -empty -delete
+

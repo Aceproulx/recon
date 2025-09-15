@@ -9,44 +9,28 @@
     <style>
         body {
             background-color: #121212;
-            color: #f5f5f5;
-            font-family: monospace;
-        }
-
-        h1 {
-            color: #0f0;
-        }
-
-        pre {
-            background-color: #000;
-            color: #0f0;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-            white-space: pre-wrap;
-            border: 1px solid #0f0;
+            color: #eee;
         }
 
         .card {
             background-color: #1e1e1e;
             border: 1px solid #333;
-            color: #ddd;
+            color: #eee;
         }
 
-        .card-title {
-            color: #0ff;
-            font-weight: bold;
-        }
-
-        .btn-outline-dark {
-            border-color: #0f0;
+        pre {
+            background-color: #111;
             color: #0f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            max-height: 200px;
+            /* Limit height */
+            overflow-y: auto;
+            /* Add vertical scrollbar if needed */
         }
 
-        .btn-outline-dark:hover {
-            background-color: #0f0;
-            color: #000;
-        }
 
         .toast-container {
             position: fixed;
@@ -54,14 +38,36 @@
             right: 1rem;
             z-index: 1055;
         }
+
+        .subtitle {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #bbb;
+            display: none;
+            margin-top: 0.5rem;
+        }
+
+        .arrow-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+        }
+
+        .arrow-btn:hover {
+            color: #fff;
+        }
     </style>
 </head>
 
 <body class="p-4">
-    <h1 class="mb-4 text-center">🔧 My Methodologies</h1>
-    <div class="text-center mb-4">
-        <a href="index.html" class="btn btn-primary fw-bold">🏠 Back to Home</a>
-    </div>
+    <h1 class="mb-4 text-center">
+        <a href="index.html" style="text-decoration: none; color: inherit; margin-right: 10px;">⬅</a>
+        🔧 MY METHODOLOGIES
+    </h1>
+
 
     <div class="container">
         <div class="row g-4" id="methods-container">
@@ -93,12 +99,22 @@
                 methods.forEach((method, idx) => {
                     const card = document.createElement('div');
                     card.className = "col-md-6 col-lg-4";
+
+                    const hasSubtitle = method.subtitle && method.subtitle.trim() !== "";
+                    const arrowBtn = hasSubtitle
+                        ? `<button class="arrow-btn" onclick="toggleSubtitle('sub-${idx}', this)">▼</button>`
+                        : "";
+
                     card.innerHTML = `
             <div class="card shadow rounded-3 h-100">
               <div class="card-body d-flex flex-column">
-                <h5 class="card-title">${method.title}</h5>
+                <div class="d-flex align-items-center">
+                  <h5 class="card-title mb-0">${method.title}</h5>
+                  ${arrowBtn}
+                </div>
+                ${hasSubtitle ? `<div id="sub-${idx}" class="subtitle">${method.subtitle}</div>` : ""}
                 <pre id="cmd-${idx}">${method.commands.join("\n")}</pre>
-                <button class="btn btn-outline-dark mt-2 mt-auto" onclick="copyText('cmd-${idx}')">📋 Copy</button>
+                <button class="btn btn-outline-light mt-2 mt-auto" onclick="copyText('cmd-${idx}')">📋 Copy</button>
               </div>
             </div>
           `;
@@ -115,11 +131,21 @@
             text = text.split("\n").map(line => line.replace(/^\$\s*/, "")).join("\n");
 
             navigator.clipboard.writeText(text).then(() => {
-                // Show toast
                 const toastEl = document.getElementById('copyToast');
                 const toast = new bootstrap.Toast(toastEl);
                 toast.show();
             });
+        }
+
+        function toggleSubtitle(id, btn) {
+            const sub = document.getElementById(id);
+            if (sub.style.display === "none" || sub.style.display === "") {
+                sub.style.display = "block";
+                btn.innerHTML = "▲";
+            } else {
+                sub.style.display = "none";
+                btn.innerHTML = "▼";
+            }
         }
 
         loadMethods();

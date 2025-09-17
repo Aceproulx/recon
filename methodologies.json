@@ -115,5 +115,12 @@
         "commands": [
             "nuclei -list hosts_alive.txt -t /home/aceos/nuclei-templates/http/exposures/apis/swagger-api.yaml"
         ]
+    },
+    {
+        "title": "SEMIGRE ANALYSIS",
+        "subtitle": "It does static code analysis",
+        "commands": [
+            "semgrep --config=p/security-audit index.php"
+        ]
     }
 ]

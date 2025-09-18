@@ -117,10 +117,11 @@
         ]
     },
     {
-        "title": "SEMIGRE ANALYSIS",
+        "title": "SEMIGREP ANALYSIS",
         "subtitle": "It does static code analysis",
         "commands": [
-            "semgrep --config=p/security-audit index.php"
+            "cat js_urls.txt | xargs -n 1 -I {} wget -q {}",
+            "semgrep --config=p/javascript ./"
         ]
     }
 ]

@@ -23,6 +23,6 @@ $ cat all_urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_
 $ grep -oE '(/|https?://)[^"]+\.js' all_urls.txt | grep -Ev '/?(jquery|bootstrap|react|vue|angular|popper|moment|chart|axios|lodash)(\.bundle)?(\.min)?\.js' | anew jsfiles_filtered.txt
 $ grep -iE '(auth|login|session|user|account|register|payment|checkout|wallet|admin|dashboard|cms|config|env|debug|core|main|app)' jsfiles_filtered.txt > jsfiles_goldmine.txt
 $ while read url; do echo -e "\n\n//=== THIS JSFILE BELONGS TO: $url ===\n" | tee -a goldmine_javascript_dump.js; curl -s "$url" |js-beautify| tee -a goldmine_javascript_dump.js | grep -iE 'apikey|token|secret|authorization|bearer'; done < jsfiles_goldmine.txt
-$ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low | tee nuclei.txt
-$ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt | tee cves.txt
+$ nuclei -l hosts_alive.txt -t ~/nuclei-templates/ -severity critical,high,medium,low -json-export nuclei_findings.json
+$ nuclei -t ~/nuclei-templates/cves/ -list hosts_alive.txt -json-export cves.json
 $ find . -maxdepth 1 -type f -empty -delete

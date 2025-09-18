@@ -1,5 +1,4 @@
 #!/bin/bash
-
 $ subfinder -d {{TARGET}} -all -recursive | tee subfinder.txt
 $ shodanx subdomain -d {{TARGET}} -o shodanx.txt
 $ assetfinder --subs-only {{TARGET}} | grep "\.{{TARGET}}" | tee -a assertfinder.txt

@@ -128,7 +128,14 @@
         "title": "NON STANDARD PORTS",
         "subtitle": "This commands scans live hosts for non standard ports",
         "commands": [
-            "httpx -l all_subdomain.txt -ports 80,443,8080,8443,8008,8081,8011,3306,5432,6379,27017,15672,10000,9090,5900 -threads 80 -o alive.txt"
+            "httpx -l all_subdomains.txt -ports 80,443,8080,8443,8008,8081,8011,3306,5432,6379,27017,15672,10000,9090,5900 -threads 80 -o alive.txt"
+        ]
+    },
+    {
+        "title": "FASTER PORT SCANNING WITH NAABU",
+        "subtitle": "This uses Naabu tool for scanning open ports",
+        "commands": [
+            "naabu -iL hosts_alive.txt -c 50 -nmap-cli \"nmap -sV -o naabuports.txt\""
         ]
     }
 ]

@@ -18,7 +18,7 @@ $ cat hosts_alive.txt | gauplus -subs -b png,jpg,gif,jpeg,swf,woff,gif,svg -o ga
 $ cat hosts_alive.txt | katana -d 5 | tee katana.txts
 $ cat gauplus.txt gaurls.txt katana.txt | anew all_urls.txt
 $ cat all_urls.txt | grep -E ".php|.asp|.aspx|.jspx|.jsp" | tee urls_common_with-vulns.txt
-$ cat all_urls.txt | gf ssrf | uro | tee urls_ssrf.txt
+$ cat all_urls.txt | gf ssrf | uro | tee ssrf_urls.txt
 $ cat all_urls.txt | grep -E "redirect=|url=|next=|return=" | tee open_redirect_params.txt
 $ grep -oE '(/|https?://)[^"]+\.js' all_urls.txt | grep -Ev '/?(jquery|bootstrap|react|vue|angular|popper|moment|chart|axios|lodash)(\.bundle)?(\.min)?\.js' | anew jsfiles_filtered.txt
 $ grep -iE '(auth|login|session|user|account|register|payment|checkout|wallet|admin|dashboard|cms|config|env|debug|core|main|app)' jsfiles_filtered.txt > jsfiles_goldmine.txt

@@ -21,6 +21,30 @@
       font-family: monospace;
       white-space: pre-wrap;
     }
+
+    /* Fade-in animation */
+    .command-line {
+      opacity: 0;
+      transform: translateX(-8px);
+      animation: fadeInSlide 0.5s forwards;
+    }
+
+    @keyframes fadeInSlide {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Neon while typing (reduced a bit) */
+    .neon span {
+      text-shadow: 0 0 3px currentColor, 0 0 6px currentColor, 0 0 12px currentColor;
+    }
+
+    /* Softer glow after finished */
+    .soft span {
+      text-shadow: 0 0 2px currentColor, 0 0 4px rgba(255, 255, 255, 0.2);
+    }
   </style>
 </head>
 
@@ -58,9 +82,9 @@
     </div>
   </div>
 
-  <!-- JS you provided -->
   <script>
     function getRandomColor() {
+      // Neon palette
       const colors = ['#0ff', '#0f0', '#f0f', '#ff0', '#0cf', '#fc0', '#c0f', '#0fa'];
       return colors[Math.floor(Math.random() * colors.length)];
     }
@@ -79,24 +103,49 @@
             .replaceAll("{{COLLAB}}", collaborator);
 
           const lines = replaced.split('\n');
-          const coloredLines = lines.map(line => {
-            const color = getRandomColor();
-            return `<span style="color: ${color}">${line}</span>`;
-          });
           const element = document.getElementById(elementId);
-          element.dataset.raw = replaced.trim(); // store original commands
-          element.innerHTML = coloredLines.join('<br>');
+          element.dataset.raw = replaced.trim();
+          element.innerHTML = "";
+
+          // Add neon while generating with paced autoscroll
+          lines.forEach((line, i) => {
+            setTimeout(() => {
+              const color = getRandomColor();
+              const div = document.createElement("div");
+              div.className = "command-line neon";
+              div.style.color = color;
+              div.innerHTML = `<span>${line}</span>`;
+              element.appendChild(div);
+
+              // 🔥 Smooth autoscroll synced with transition
+              element.scrollTo({
+                top: element.scrollHeight,
+                behavior: "smooth"
+              });
+            }, i * 120); // match animation delay (0.12s)
+          });
 
           element.style.display = "block";
           const button = elementId.includes("recon")
             ? document.querySelector('.btn-success')
             : document.querySelector('.btn-warning');
           button.style.display = "inline-block";
+
+          // After last line finishes, switch to soft glow
+          const totalDelay = lines.length * 120 + 500; // ms
+          setTimeout(() => {
+            const children = element.querySelectorAll(".command-line");
+            children.forEach(c => {
+              c.classList.remove("neon");
+              c.classList.add("soft");
+            });
+          }, totalDelay);
         })
         .catch(error => {
           document.getElementById(elementId).textContent = `Error loading ${file}: ${error}`;
         });
     }
+
 
     function generateCommands(type) {
       const inputId = type === 'recon' ? 'target' : 'target2';
@@ -145,6 +194,7 @@
         .catch(() => alert("Failed to copy!"));
     }
   </script>
+
 </body>
 
 </html>

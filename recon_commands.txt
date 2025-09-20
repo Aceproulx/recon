@@ -15,7 +15,7 @@ $ cat hosts_alive.txt | grep -E "admin|panel|portal|secure|dashboard|internal|ap
 $ waymore -i {{TARGET}} -mode U -oU waymore.txt
 $ cat hosts_alive.txt | gau | tee gaurls.txt
 $ cat hosts_alive.txt | gauplus -subs -b png,jpg,gif,jpeg,swf,woff,gif,svg -o gauplus.txt
-$ cat hosts_alive.txt | katana -d 5 | tee katana.txts
+$ cat hosts_alive.txt | katana -d 5 | tee katana.txt
 $ cat gauplus.txt gaurls.txt katana.txt | anew all_urls.txt
 $ cat all_urls.txt | grep -E ".php|.asp|.aspx|.jspx|.jsp" | tee urls_common_with-vulns.txt
 $ cat all_urls.txt | gf ssrf | uro | tee ssrf_urls.txt

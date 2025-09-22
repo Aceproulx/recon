@@ -137,5 +137,14 @@
         "commands": [
             "naabu -iL hosts_alive.txt -c 50 -nmap-cli \"nmap -sV -o naabuports.txt\""
         ]
+    },
+    {
+        "title": "VirusTotal Domain Lookup",
+        "subtitle": "Query VirusTotal API to retrieve domain reputation, subdomains, and related data \n export VT_KEY=\"YOUR_API_KEY\"",
+        "commands": [
+            "curl \"https://www.virustotal.com/vtapi/v2/domain/report?apikey=$VT_KEY&domain=snapchat.com\" | jq -r",
+            "curl \"https://www.virustotal.com/vtapi/v2/domain/report?apikey=$VT_KEY&domain=example.com\" | jq -r '.subdomains[]' | tee subdomains.txt",
+            "curl \"https://www.virustotal.com/vtapi/v2/domain/report?apikey=$VT_KEY&domain=example.com\" | jq -r '.categories'"
+        ]
     }
 ]

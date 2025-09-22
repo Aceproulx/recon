@@ -144,5 +144,29 @@
         "commands": [
             "curl \"https://www.virustotal.com/vtapi/v2/domain/report?apikey=$VT_KEY&domain=snapchat.com\" | jq -r"
         ]
+    },
+    {
+        "title": "Favicon Hashing Methodology",
+        "subtitle": "Extract and hash favicon.ico files to identify technologies or applications",
+        "commands": [
+            "curl -s '<URL>/favicon.ico' | base64 | python3 -c 'import mmh3,sys;print(mmh3.hash(sys.stdin.buffer.read()))'"
+        ]
+    },
+    {
+        "title": "Shodan Favicon Hash Hunting",
+        "subtitle": "Search Shodan using favicon hashes to identify similar technologies or applications",
+        "commands": [
+            "http.favicon.hash:-1533858881"
+        ]
+    },
+    {
+        "title": "CORS Payloads",
+        "subtitle": "Test misconfigured CORS policies with trusted developer domains",
+        "payloads": [
+            "https://github.io",
+            "https://stackblitz.com",
+            "https://codepen.io",
+            "https://jsfiddle.net"
+        ]
     }
 ]

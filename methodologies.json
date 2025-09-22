@@ -162,7 +162,7 @@
     {
         "title": "CORS Payloads",
         "subtitle": "Test misconfigured CORS policies with trusted developer domains",
-        "payloads": [
+        "commands": [
             "https://github.io",
             "https://stackblitz.com",
             "https://codepen.io",

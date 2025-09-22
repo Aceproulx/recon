@@ -7,7 +7,8 @@ $ gobuster dns -domain {{TARGET}} -w /mnt/d/Downloads/Documents/subdomain_megali
 $ cat subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt | sort -u | grep '\.{{TARGET}}'| tee -a subs_{{TARGET}}.txt && rm  subfinder.txt amass.txt shodanx.txt assertfinder.txt gobuster.txt
 $ curl -s "https://otx.alienvault.com/api/v1/indicators/hostname/{{TARGET}}/passive_dns" | jq -r '.passive_dns[]?.hostname' | sort -u | tee -a alienvault_subs.txt
 $ curl -s "https://urlscan.io/api/v1/search/?q=domain:{{TARGET}}&size=10000" | jq -r '.results[]?.page?.domain' | sort -u | tee urlscan_subs.txt
-$ cat subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt subfinder.txt | sort -u |grep {{TARGET}}| tee -a all_subdomains.txt && rm subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt
+$ curl "https://www.virustotal.com/vtapi/v2/domain/report?apikey=$VT_KEY&domain={{TARGET}}" | jq -r '.subdomains[]' | tee virustotal.txt
+$ cat subs_{{TARGET}}.txt alienvault_subs.txt virustotal.txt urlscan_subs.txt subfinder.txt | sort -u |grep {{TARGET}}| tee -a all_subdomains.txt && rm subs_{{TARGET}}.txt alienvault_subs.txt urlscan_subs.txt virustotal.txt
 $ httpx -l all_subdomains.txt -td -title -sc -ip -threads 200 -o httpx_alive.txt
 $ cat httpx_alive.txt | grep -Ei 'old|asp|php|jsp|jspx|aspx' | tee subs-commonly-wth-vulns.txt
 $ cat httpx_alive.txt | awk '{print $1}' | tee hosts_alive.txt

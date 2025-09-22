@@ -168,15 +168,5 @@
             "https://codepen.io",
             "https://jsfiddle.net"
         ]
-    },
-    {
-        "title": "CORS Payloads",
-        "subtitle": "Test misconfigured CORS policies with trusted developer domains",
-        "payloads": [
-            "https://github.io",
-            "https://stackblitz.com",
-            "https://codepen.io",
-            "https://jsfiddle.net"
-        ]
     }
 ]

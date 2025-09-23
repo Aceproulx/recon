@@ -168,5 +168,19 @@
             "https://codepen.io",
             "https://jsfiddle.net"
         ]
+    },
+    {
+        "title": "MALICIUS PDFs",
+        "subtitle": "Generates malicius pdfs<br> -test1.pdf : Network callback via file system <br> -test1bis.pdf : Network callback via HTTPS <br> -test2.pdf : Automatic form submission <br> -test3.pdf : External document loading <br> -test4.pdf : UNC path callback <br> -test5.pdf : DNS prefetching/HTTP request <br> -test6.pdf : External resource execution <br> -test7.pdf : Remote PDF loading <br> -test8.pdf : Form data submission <br> -test9.pdf : External data import <br>",
+        "commands": [
+            "python  ~/malicious-pdf/malicious-pdf.py  burp-collaborator-url"
+        ]
+    },
+    {
+        "title": "MISCONFIG MAPPER",
+        "subtitle": "",
+        "commands": [
+            "misconfig-mapper -target \"yourcompanyname\" -service \"*\" -delay 1000"
+        ]
     }
 ]

@@ -189,5 +189,12 @@
         "commands": [
             "docker run -v \"$(pwd)/Jira-Lens/output:/app/Jira-Lens/output\" jira-lens &lt;url&gt;"
         ]
+    },
+    {
+        "title": "SCREENSHOT DOMAINS",
+        "subtitle": "Takes screenshots of live domains",
+        "commands": [
+            "cat hosts_alive.txt | aquatone -out ./output -http-timeout 60000"
+        ]
     }
 ]

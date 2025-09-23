@@ -182,5 +182,12 @@
         "commands": [
             "misconfig-mapper -target \"yourcompanyname\" -service \"*\" -delay 1000"
         ]
+    },
+    {
+        "title": "JIRA VULNERABILITY SCANNER",
+        "subtitle": "Scans for vulnerabilities in jira app",
+        "commands": [
+            "docker run -v \"$(pwd)/Jira-Lens/output:/app/Jira-Lens/output\" jira-lens &lt;url&gt;"
+        ]
     }
 ]

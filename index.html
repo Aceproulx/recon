@@ -10,8 +10,47 @@
     body {
       background-color: #121212;
       color: #fff;
+      overflow-x: hidden;
     }
 
+    /* ----------------- Loading Screen ----------------- */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #121212;
+      color: #00e5ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    #loading-text {
+      text-shadow: 0 0 3px #00e5ff, 0 0 6px #00e5ff, 0 0 12px #00e5ff;
+      animation: flicker 1s infinite;
+    }
+
+    @keyframes flicker {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* ----------------- Main Page Styles ----------------- */
     .output-box {
       height: 300px;
       overflow-y: scroll;
@@ -94,6 +133,11 @@
 
 <body class="container py-4">
 
+  <!-- ✅ Loading Animation -->
+  <div id="loading-screen">
+    <span id="loading-text"></span>
+  </div>
+
   <!-- ✅ Consistent Header -->
   <nav class="navbar navbar-expand-lg mb-4">
     <div class="container-fluid">
@@ -145,6 +189,26 @@
   </div>
 
   <script>
+    // ------------------ Loading Animation ------------------
+    const loadingText = document.getElementById("loading-text");
+    const loadingString = "BUG HUNTING BY MIKE MASANGA";
+    let index = 0;
+
+    function typeEffect() {
+      if (index < loadingString.length) {
+        loadingText.textContent += loadingString[index];
+        index++;
+        setTimeout(typeEffect, 80);
+      }
+    }
+
+    typeEffect();
+
+    setTimeout(() => {
+      document.getElementById("loading-screen").style.display = "none";
+    }, 4000);
+
+    // ------------------ Main Commands Logic ------------------
     function getRandomColor() {
       const colors = ['#0ff', '#0f0', '#f0f', '#ff0', '#0cf', '#fc0', '#c0f', '#0fa'];
       return colors[Math.floor(Math.random() * colors.length)];

@@ -11,6 +11,8 @@
       background-color: #121212;
       color: #fff;
       overflow-x: hidden;
+      margin: 0;
+      font-family: Arial, sans-serif;
     }
 
     /* ----------------- Loading Screen ----------------- */
@@ -20,34 +22,25 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: #121212;
-      color: #00e5ff;
+      background-color: #000;
+      background-size: contain;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
+      text-align: center;
       font-weight: bold;
       z-index: 9999;
       flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     #loading-text {
+      color: #00e5ff;
       text-shadow: 0 0 3px #00e5ff, 0 0 6px #00e5ff, 0 0 12px #00e5ff;
-      animation: flicker 1s infinite;
-    }
-
-    @keyframes flicker {
-      0% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.6;
-      }
-
-      100% {
-        opacity: 1;
-      }
+      font-size: xx-large;
+      margin-top: 20px;
+      transition: opacity 0.4s ease;
     }
 
     /* ----------------- Main Page Styles ----------------- */
@@ -95,7 +88,6 @@
       border-radius: 14px;
     }
 
-    /* Navbar styles */
     .navbar {
       background-color: #1c1c1c;
       border-bottom: 2px solid #333;
@@ -191,22 +183,42 @@
   <script>
     // ------------------ Loading Animation ------------------
     const loadingText = document.getElementById("loading-text");
-    const loadingString = "BUG HUNTING BY MIKE MASANGA";
-    let index = 0;
+    const loadingSequence = ["💻 BUG HUNTING BY...", ": MIKE MASANGA"];
+    let seqIndex = 0;
 
-    function typeEffect() {
-      if (index < loadingString.length) {
-        loadingText.textContent += loadingString[index];
-        index++;
-        setTimeout(typeEffect, 80);
+    function typeEffectSequence() {
+      if (seqIndex >= loadingSequence.length) return;
+
+      const text = loadingSequence[seqIndex];
+      let charIndex = 0;
+      loadingText.textContent = "";
+      loadingText.style.opacity = 1;
+
+      function typeChar() {
+        if (charIndex < text.length) {
+          loadingText.textContent += text[charIndex];
+          charIndex++;
+          setTimeout(typeChar, 100);
+        } else {
+          // Fade out then move to next
+          setTimeout(() => {
+            loadingText.style.opacity = 0;
+            setTimeout(() => {
+              seqIndex++;
+              typeEffectSequence();
+            }, 400);
+          }, 800);
+        }
       }
+
+      typeChar();
     }
 
-    typeEffect();
+    typeEffectSequence();
 
     setTimeout(() => {
       document.getElementById("loading-screen").style.display = "none";
-    }, 4000);
+    }, 5000);
 
     // ------------------ Main Commands Logic ------------------
     function getRandomColor() {
@@ -221,9 +233,7 @@
           return response.text();
         })
         .then(data => {
-          let replaced = data
-            .replaceAll("{{TARGET}}", target)
-            .replaceAll("{{COLLAB}}", collaborator);
+          let replaced = data.replaceAll("{{TARGET}}", target).replaceAll("{{COLLAB}}", collaborator);
           const lines = replaced.split('\n');
           const element = document.getElementById(elementId);
           element.dataset.raw = replaced.trim();
@@ -242,9 +252,7 @@
             }, i * 120);
           });
           element.style.display = "block";
-          const button = type === 'recon'
-            ? document.querySelector('.btn-success')
-            : document.querySelector('.btn-warning');
+          const button = type === 'recon' ? document.querySelector('.btn-success') : document.querySelector('.btn-warning');
           button.style.display = "inline-block";
           const totalDelay = lines.length * 120 + 500;
           setTimeout(() => {
@@ -254,14 +262,10 @@
             });
           }, totalDelay);
           if (type === 'exploit') {
-            setTimeout(() => {
-              window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-            }, 300);
+            setTimeout(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" }); }, 300);
           }
           const advCard = document.getElementById("advanced-card");
-          if (advCard) {
-            advCard.remove();
-          }
+          if (advCard) advCard.remove();
         })
         .catch(error => {
           const el = document.getElementById(elementId);
@@ -294,10 +298,7 @@
       const outputId = type === 'recon' ? 'output-recon' : 'output-exploit';
       const button = type === 'recon' ? document.querySelector('.btn-success') : document.querySelector('.btn-warning');
       const text = document.getElementById(outputId).dataset.raw || '';
-      const cleanedText = text
-        .split('\n')
-        .map(line => line.startsWith('$ ') ? line.slice(2) : line)
-        .join('\n');
+      const cleanedText = text.split('\n').map(line => line.startsWith('$ ') ? line.slice(2) : line).join('\n');
       navigator.clipboard.writeText(cleanedText)
         .then(() => {
           const originalText = button.textContent;

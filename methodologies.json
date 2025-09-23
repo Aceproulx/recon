@@ -192,7 +192,7 @@
     },
     {
         "title": "SCREENSHOT DOMAINS",
-        "subtitle": "Takes screenshots of live domains",
+        "subtitle": "Takes screenshots of a list of live domains",
         "commands": [
             "cat hosts_alive.txt | aquatone -out ./output -http-timeout 60000"
         ]

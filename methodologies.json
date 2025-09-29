@@ -232,7 +232,7 @@
         "title": "HTTP REQUEST SMUGGLING SCANNER",
         "subtitle": "Scans hosts for HTTP request smuggling vulnerabilities",
         "commands": [
-            "while read -r url; do echo \"[*] $url\"; python /home/aceos/smuggler/smuggler.py -u \"$url\" >> smugger.txt; done < hosts_alive.txt"
+            "cat hosts_alive.txt | xargs -I{} zsh -c 'printf \"[*] %s\n\" \"$1\"; python3 /home/aceos/smuggler/smuggler.py -u \"$1\"' _ {} 2>&1 | tee -a smuggler.txt"
         ]
     },
     {

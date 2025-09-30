@@ -58,7 +58,7 @@
         ]
     },
     {
-        "title": "CORS: TRUSTED NULL ORIGIN",
+        "title": "2. CORS: TRUSTED NULL ORIGIN",
         "subtitle": "insecure  CORS configuration where the website trusts the \"null\" origin js code",
         "commands": [
             "&lt;iframe sandbox=\"allow-scripts allow-top-navigation allow-forms\" srcdoc=\"&lt;script&gt;",

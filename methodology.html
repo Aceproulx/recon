@@ -92,6 +92,14 @@
             color: #fff;
         }
 
+        /* Highlight for search matches */
+        mark {
+            background: #0ff;
+            color: #000;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
         /* Toast */
         .toast-container {
             position: fixed;
@@ -108,6 +116,25 @@
             right: 20px;
             z-index: 1060;
         }
+
+        /* Search Box */
+        .search-box {
+            margin-top: 10px;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .search-box input {
+            background: white;
+            border: 1px solid #0ff;
+            color: #eee;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 8px #0ff;
+        }
     </style>
 </head>
 
@@ -116,8 +143,13 @@
     <!-- Consistent Header -->
     <div class="header-bar">
         <a href="index.html" class="back-btn">⬅ Back</a>
-        <h1 class="header-title">🛠️Explore</h1>
+
         <a href="https://guptashubham.com/resources/cors-poc-generator/" class="back-btn">🔍CORS</a>
+        <h1 class="header-title">🛠️Explore</h1>
+        <!-- Search -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search..." class="form-control form-control-sm" />
+        </div>
     </div>
 
     <div class="container py-4">
@@ -146,39 +178,66 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let methodsData = [];
+
         async function loadMethods() {
             try {
                 const response = await fetch('methodologies.json');
-                const methods = await response.json();
-                const container = document.getElementById('methods-container');
+                methodsData = await response.json();
+                renderMethods(methodsData);
+            } catch (err) {
+                console.error("Error loading methodologies:", err);
+            }
+        }
 
-                methods.forEach((method, idx) => {
-                    const card = document.createElement('div');
-                    card.className = "col-12 col-md-6 col-lg-4";
+        function highlightText(text, searchValue) {
+            if (!searchValue) return text;
+            const regex = new RegExp(`(${searchValue})`, "gi");
+            return text.replace(regex, "<mark>$1</mark>");
+        }
 
-                    const hasSubtitle = method.subtitle && method.subtitle.trim() !== "";
-                    const arrowBtn = hasSubtitle
-                        ? `<button class="arrow-btn" onclick="toggleSubtitle('sub-${idx}', this)">▼</button>`
-                        : "";
+        function renderMethods(methods, searchValue = "") {
+            const container = document.getElementById('methods-container');
+            container.innerHTML = "";
 
-                    card.innerHTML = `
+            methods.forEach((method, idx) => {
+                const card = document.createElement('div');
+                card.className = "col-12 col-md-6 col-lg-4";
+
+                const hasSubtitle = method.subtitle && method.subtitle.trim() !== "";
+                const arrowBtn = hasSubtitle
+                    ? `<button class="arrow-btn" onclick="toggleSubtitle('sub-${idx}', this)">▼</button>`
+                    : "";
+
+                card.innerHTML = `
               <div class="card shadow rounded-3 h-100">
                 <div class="card-body d-flex flex-column">
                   <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0">${method.title}</h5>
+                    <h5 class="card-title mb-0">${highlightText(method.title, searchValue)}</h5>
                     ${arrowBtn}
                   </div>
-                  ${hasSubtitle ? `<div id="sub-${idx}" class="subtitle">${method.subtitle}</div>` : ""}
+                  ${hasSubtitle ? `<div id="sub-${idx}" class="subtitle">${highlightText(method.subtitle, searchValue)}</div>` : ""}
                   <pre id="cmd-${idx}">${method.commands.join("\n")}</pre>
                   <button class="btn btn-outline-light mt-2 mt-auto" onclick="copyText('cmd-${idx}')">📋 Copy</button>
                 </div>
               </div>
           `;
-                    container.appendChild(card);
-                });
-            } catch (err) {
-                console.error("Error loading methodologies:", err);
-            }
+                container.appendChild(card);
+            });
+        }
+
+        async function filterMethods() {
+            const searchValue = document.getElementById("searchInput").value.toLowerCase();
+
+            // async delay for smoothness
+            await new Promise(r => setTimeout(r, 0));
+
+            const filtered = methodsData.filter(m =>
+                m.title.toLowerCase().includes(searchValue) ||
+                (m.subtitle && m.subtitle.toLowerCase().includes(searchValue))
+            );
+
+            renderMethods(filtered, searchValue);
         }
 
         function copyText(id) {
@@ -217,6 +276,9 @@
         scrollBtn.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+
+        // search typing event
+        document.getElementById("searchInput").addEventListener("input", filterMethods);
 
         loadMethods();
     </script>

